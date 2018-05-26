@@ -32,3 +32,25 @@ Ok - so now we know a bit more about how libraries within CLI pojects work; let'
 ```bash
 $ ng generate library my-new-lib
 ```
+
+This creates a new `/projects` directory with a new folder for your library. We some example files, and some newer files.
+
+![new library directory structure](assets/library-dir-structure.png)
+
+The files to really take note of here are `/src/public_api.ts`, `ng-package.json`, and `ng-package.prod.json`. These files control the configuration for [ng-packagr](https://github.com/dherges/ng-packagr) - the library that powers the packaging of your library. I encourage you to check out the project and familiarize yourself with how it works, but here is a quick and dirty overview:
+
+* `public_api.ts` is the new entry point for your library. If you have any files that you want accessable to consumers of your library (modules, components, etc...) you need to export them here in addition to exporting them from whatever modules are in your library.
+
+```typescript
+/* src/public_api.ts */
+
+export * from './lib/my-new-library.service';
+export * from './lib/my-new-library.component';
+export * from './lib/my-new-library.module';
+```
+
+* `ng-package.json` and `ng-package.prod.json` control the configuration for the packaging process that ng-packagr performs. You can use them to change things like the destination build directory or defining a different entry point for your app. `ng-package.json` is used during your `ng build` command and `ng-package.prod.json` is used when you run `ng build --prod`. The only difference between these two files right now is that `ng-package.json` contains a `deleteDestPath` flag that will delete your destination directory before running a build. This will be helpful during development when you are constantly making changes.
+
+> Protip: if your library needs to do something like bundle an overall Sass file, you will need to include something like [scss-bundle](https://github.com/SimplrJS/scss-bundle) in your workflow. [See here for more information](https://github.com/dherges/ng-packagr/issues/273#issuecomment-345059670)
+
+## Using Schematics to build components for your library
