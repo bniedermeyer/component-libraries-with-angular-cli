@@ -6,7 +6,7 @@ import { MatBadgeModule } from '@angular/material/badge';
 import { CounterButtonComponent } from './counter-button/counter-button.component';
 
 @NgModule({
-  imports: [CommonModule],
+  imports: [CommonModule, MatBadgeModule, MatButtonModule],
   declarations: [CounterButtonComponent],
   exports: [CounterButtonComponent]
 })
