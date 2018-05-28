@@ -95,10 +95,10 @@ Since we will want others to consume this module we need to add it to `public_ap
  * Public API Surface of my-new-library
  */
 
-export * from './lib/my-lib-module.module';
+export * from './lib/my-lib.module';
 ```
 
-Let's have our library have a component that is a button that will count and display the number of times it's been clicked.
+Let's have our library have a component that is a button that will count and display the number of times it's been clicked. Each time it is clicked it should also emit an event to let any parent component know that the count has changed and what the current count is.
 
 First let's generate our component.
 
@@ -106,19 +106,62 @@ First let's generate our component.
 $ ng generate component counter-button
 ```
 
-Let's export it from our library. Also import the `MatButtonModule` while we are here.
+Let's export it from our library. Also import the `MatBadgeModule` and `MatButtonModule` while we are here.
 
 ```typescript
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatButtonModule } from '@angular/material';
+import { MatButtonModule } from '@angular/material/button';
+import { MatBadgeModule } from '@angular/material/badge';
 
 import { CounterButtonComponent } from './counter-button/counter-button.component';
 
 @NgModule({
-  imports: [CommonModule],
+  imports: [CommonModule, MatBadgeModule, MatButtonModule],
   declarations: [CounterButtonComponent],
   exports: [CounterButtonComponent]
 })
 export class MyLibModule {}
 ```
+
+Also add the component to `public_api.ts`
+
+```typescript
+import { Component, OnInit, EventEmitter } from '@angular/core';
+
+@Component({
+  selector: 'lib-counter-button',
+  templateUrl: './counter-button.component.html',
+  styleUrls: ['./counter-button.component.css']
+})
+export class CounterButtonComponent implements OnInit {
+  countChanged = new EventEmitter<number>();
+  clickCount = 0;
+  visible = false;
+
+  constructor() {}
+
+  ngOnInit() {}
+
+  /**
+   * Increments the count when the button is clicked and emits an event
+   * to notify parent compont of new count value
+   */
+  handleButtonClick() {
+    this.clickCount++;
+    this.visible = this.visible ? this.visible : true;
+    this.countChanged.emit(this.clickCount);
+  }
+}
+```
+
+Next we'll wire up the component to the template.
+
+```html
+<button type="button" mat-raised-button color="primary" matBadge="clickCount" matBadgeColor="accent" [matBadgeHidden]="!visible"
+  (click)="handleButtonClick()">Click Me!</button>
+```
+
+Now we have a component that we want other apps to use! But how do we make sure it works? We'll handle that next
+
+## Using our library in other applications
