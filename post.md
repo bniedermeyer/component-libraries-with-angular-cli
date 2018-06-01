@@ -76,6 +76,7 @@ For libraries that will be installed and consumed by third parties (hint, hint: 
   "peerDependencies": {
     "@angular/common": "^6.0.0-rc.0 || ^6.0.0",
     "@angular/core": "^6.0.0-rc.0 || ^6.0.0",
+    "@angular/cdk": "^6.1.0",
     "@angular/material": "^6.1.0"
   }
 }
@@ -158,7 +159,7 @@ export class CounterButtonComponent implements OnInit {
 Next we'll wire up the component to the template.
 
 ```html
-<button type="button" mat-raised-button color="primary" matBadge="clickCount" matBadgeColor="accent" [matBadgeHidden]="!visible"
+<button type="button" mat-raised-button color="primary" [matBadge]="clickCount" matBadgeColor="accent" [matBadgeHidden]="!visible"
   (click)="handleButtonClick()">Click Me!</button>
 ```
 
@@ -201,3 +202,39 @@ This generates the `dist/` directory mentioned eariler. If you open that directo
 ![built library](assets/library-dist.png)
 
 Now we are ready to use the library our app!
+
+Import our module in `src/app/app.module.ts`
+
+```typescript
+import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { NgModule } from '@angular/core';
+
+import { AppComponent } from './app.component';
+import { MyLibModule } from 'my-new-library';
+
+@NgModule({
+  declarations: [AppComponent],
+  imports: [BrowserModule, BrowserAnimationsModule, MyLibModule],
+  providers: [],
+  bootstrap: [AppComponent]
+})
+export class AppModule {}
+```
+
+Now let's add the `CounterButtonComponent` to `src/app/app.component.html`
+
+```html
+<div style="text-align:center; padding: 20px;">
+  <lib-counter-button></lib-counter-button>
+</div>
+```
+
+Let's our example app in action!
+
+```bash
+$ ng build my-new-library
+$ ng serve
+```
+
+Open our browser and you'll see your component in action!
