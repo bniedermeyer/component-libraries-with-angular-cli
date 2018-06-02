@@ -276,6 +276,27 @@ $ cd test-lib-app
 $ npm link my-new-library
 ```
 
+Also add `preserveSymLinks` to `angular.json` in the `options` object under `projects/test-lib-app/architect/build`. This allows the linking of your library to continue working when the app is served.
+
+```json
+"architect": {
+  "build": {
+    "builder": "@angular-devkit/build-angular:browser",
+    "options": {
+      "preserveSymlinks": true,
+      "outputPath": "dist/test-lib-app",
+      "index": "src/index.html",
+      "main": "src/main.ts",
+      "polyfills": "src/polyfills.ts",
+      "tsConfig": "src/tsconfig.app.json",
+      "assets": ["src/favicon.ico", "src/assets"],
+      "styles": ["src/styles.css"],
+      "scripts": []
+    }
+  }
+}
+```
+
 Use the library in the same way we did eariler and you see that it will work here as well! To remove the linked library you can use an `npm remove my-new-library` command in the test project and the `npm unlink` command in the directory of your built library.
 
 If you are ready to publish your app to npm for others go ahead and run the below command inside of your `dist/my-new-library` directory.
