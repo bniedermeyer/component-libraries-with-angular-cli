@@ -238,3 +238,5 @@ $ ng serve
 ```
 
 Open our browser and you'll see your component in action!
+
+![tada!](assets/local-app.gif)
