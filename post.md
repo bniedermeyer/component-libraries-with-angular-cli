@@ -8,8 +8,8 @@ We'll cover:
 
 * [Generating a library with the Angular CLI](#generating-a-library-project-with-the-angular-cli)
 * [Building components for your library](#building-components-for-your-library)
-* Creating a sample app that uses our library
-* Publishing the library and how to use it/test it locally in other apps.
+* [Using your library in other applications](#using-your-library-in-other-applications)
+* [Publishing your library for others to use](#publishing-your-library-for-others-to-use)
 
 ## Generating a library project with the Angular CLI
 
@@ -184,7 +184,9 @@ Open up `tsconfig.json` in the root of your workspace. You'll see a `paths` opti
 }
 ```
 
-What this does is allow you to automatically use your library, after it's been built, in other apps in the workspace. This works similarly to how using libraries installed by npm in that you can just import your components and use in your library. This of course means that you _must_ build any libraries that your app depends on **before** you build your app. A sample workflow could work like this:
+What this does is allow you to automatically use your library, after it's been built, in other apps in the workspace. This works similarly to how using libraries installed by npm in that you can just import your components and use in your library. This of course means that you _must_ build any libraries that your app depends on **before** you build your app, and will need to rebuild it every time you make a change to the library before those changes will be reflected.
+
+A sample workflow could work like this:
 
 ```bash
 $ ng build <library-name> // builds your library
@@ -233,10 +235,55 @@ Now let's add the `CounterButtonComponent` to `src/app/app.component.html`
 Let's our example app in action!
 
 ```bash
-$ ng build my-new-library
-$ ng serve
+$ ng build my-new-library // build your library
+$ ng serve // serve the Angular app dependent on your library
 ```
 
-Open our browser and you'll see your component in action!
+Open the browser and you'll see your component in action!
 
 ![tada!](assets/local-app.gif)
+
+Using libraries like this is a great way for you to share code between multiple Angular apps in the same workspace. Additionally, if you are building something like a component library that you could use the originally generated Angular app to build great working examples for your library.
+
+## Publishing your library for others to use
+
+So, you've built an awesome component library and are using it in your own applications, but what if you want to share it so others can use it in their apps?
+
+First, if you haven't published anything on npm before go ahead and sign up.
+
+```bash
+$ npm adduser
+```
+
+After you sign into your npm account, build the library again. This time use the `--prod` flag so that the Angular CLI will perform some additional steps for optimization.
+
+```bash
+$ ng build my-new-library --prod
+```
+
+Now move into `dist/my-new-library`. If you want to test that your package will work in other apps you can link it to your local npm registry.
+
+```bash
+$ npm link
+```
+
+Now create a new Angular workspace and link your library to the project.
+
+```bash
+$ cd ~/Desktop
+$ ng new test-lib-app
+$ cd test-lib-app
+$ npm link my-new-library
+```
+
+Use the library in the same way we did eariler and you see that it will work here as well! To remove the linked library you can use an `npm remove my-new-library` command in the test project and the `npm unlink` command in the directory of your built library.
+
+If you are ready to publish your app to npm for others go ahead and run the below command inside of your `dist/my-new-library` directory.
+
+```bash
+$ npm publish
+```
+
+Congratulations! You have built your component library with Angular and have published it to npm for others to use. Go forth and build cool libraries to share!
+
+You can find the code used in the examples in my Github at <INSTER LINK HERE>
