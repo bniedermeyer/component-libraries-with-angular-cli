@@ -8,7 +8,6 @@ import { Component, OnInit, EventEmitter } from '@angular/core';
 export class CounterButtonComponent implements OnInit {
   countChanged = new EventEmitter<number>();
   clickCount = 0;
-  visible = false;
 
   constructor() {}
 
@@ -20,7 +19,6 @@ export class CounterButtonComponent implements OnInit {
    */
   handleButtonClick() {
     this.clickCount++;
-    this.visible = this.visible ? this.visible : true;
     this.countChanged.emit(this.clickCount);
   }
 }
