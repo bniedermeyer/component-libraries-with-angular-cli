@@ -51,7 +51,7 @@ export * from './lib/my-new-library.component';
 export * from './lib/my-new-library.module';
 ```
 
-* `ng-package.json` and `ng-package.prod.json` control the configuration for the packaging process that ng-packagr performs. You can use them to change things like the destination build directory or defining a different entry point for your app. `ng-package.json` is used during your `ng build` command and `ng-package.prod.json` is used when you run `ng build --prod`. The only difference between these two files right now is that `ng-package.json` contains a `deleteDestPath` flag that will delete your destination directory before running a build. This will be helpful during development when you are constantly making changes.
+* `ng-package.json` and `ng-package.prod.json` control the configuration for the packaging process that ng-packagr performs. You can use them to change things like the destination build directory or defining a different entry point for your app. `ng-package.json` is used during your `ng build` command and `ng-package.prod.json` is used when you run `ng build --prod`. The only difference between these two files right now is that `ng-package.json` contains a `deleteDestPath` flag that will prevent your destination directory from being deleted before running a build. This will be helpful during development when you are constantly making changes.
 
 > Protip: if your library needs to do something like bundle an overall Sass file, you will need to include something like [scss-bundle](https://github.com/SimplrJS/scss-bundle) in your workflow. [See here for more information](https://github.com/dherges/ng-packagr/issues/273#issuecomment-345059670)
 
@@ -88,7 +88,7 @@ Let's setup the module for our library. First, delete the example files that wer
 
 ```bash
 $ cd projects/my-new-library/src/lib
-$ ng generate module my-lib-module --flat --spec false
+$ ng generate module my-lib --flat --spec false
 ```
 
 Since we will want others to consume this module we need to add it to `public_api.ts`.
