@@ -307,4 +307,4 @@ $ npm publish
 
 Congratulations! You have built your component library with Angular and have published it to npm for others to use. Go forth and build cool libraries to share!
 
-You can find the code used in the examples in my Github at <INSTER LINK HERE>. For next steps I also highly encourage you to dive into the documentation for [ng-packagr](https://github.com/dherges/ng-packagr/issues?q=label%3Adocumentation%20) to learn about more advanced topics about the library packaging process.
+You can find the code used in the examples in Github [here](https://github.com/bniedermeyer/component-libraries-with-angular-cli). For next steps I also highly encourage you to dive into the documentation for [ng-packagr](https://github.com/dherges/ng-packagr/issues?q=label%3Adocumentation%20) to learn about more advanced topics about the library packaging process.
