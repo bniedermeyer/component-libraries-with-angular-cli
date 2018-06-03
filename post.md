@@ -141,7 +141,7 @@ export * from './lib/counter-button/counter-button.component';
 Now add logic to the component to handle incrementing the count displayed whenever the button is clicked.
 
 ```typescript
-import { Component, OnInit, EventEmitter } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 
 @Component({
   selector: 'lib-counter-button',
@@ -149,7 +149,7 @@ import { Component, OnInit, EventEmitter } from '@angular/core';
   styleUrls: ['./counter-button.component.css']
 })
 export class CounterButtonComponent implements OnInit {
-  countChanged = new EventEmitter<number>();
+  @Output() countChanged: EventEmitter<number> = new EventEmitter();
   clickCount = 0;
 
   constructor() {}
@@ -158,7 +158,7 @@ export class CounterButtonComponent implements OnInit {
 
   /**
    * Increments the count when the button is clicked and emits an event
-   * to notify parent compont of new count value
+   * to notify parent component of new count value
    */
   handleButtonClick() {
     this.clickCount++;
@@ -200,8 +200,8 @@ What this does is allow you to automatically use your library, after it's been b
 A sample workflow could work like this:
 
 ```bash
-$ ng build <library-name> // builds your library
-$ ng build <app-name> // builds the application that depends on your library
+$ ng build <library-name> # builds your library
+$ ng build <app-name> # builds the application that depends on your library
 ```
 
 Now go ahead and build our library, then we will build an example of how to use it using the original app generated in our workspace.
@@ -235,19 +235,40 @@ import { MyLibModule } from 'my-new-library';
 export class AppModule {}
 ```
 
-Now add the `CounterButtonComponent` to `src/app/app.component.html`
+We want to demonstrate that the app is receiving the `countChanged` events from the library component so implement `handleCountChanged()` in `src/app/app.component.ts`.
+
+```typescript
+import { Component } from '@angular/core';
+
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css']
+})
+export class AppComponent {
+  title = 'app';
+  currentCount = 0;
+
+  handleCountChanged(e) {
+    this.currentCount = e;
+  }
+}
+```
+
+Now add the `CounterButtonComponent` to `src/app/app.component.html`. Also add a div that shows the values being emitted from the component.
 
 ```html
 <div style="text-align:center; padding: 20px;">
-  <lib-counter-button></lib-counter-button>
+  <lib-counter-button (countChanged)="handleCountChanged($event)"></lib-counter-button>
+  <div>The current count is {{currentCount}}!</div>
 </div>
 ```
 
-Let's see our example app in action!
+Let's see our example app in action! Remember to build your library before serving the app.
 
 ```bash
-$ ng build my-new-library // build your library
-$ ng serve // serve the Angular app dependent on your library
+$ ng build my-new-library # build your library
+$ ng serve # serve the Angular app dependent on your library
 ```
 
 Open the browser and you'll see your component in action!
