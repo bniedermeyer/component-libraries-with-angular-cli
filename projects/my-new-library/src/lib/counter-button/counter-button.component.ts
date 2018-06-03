@@ -15,7 +15,7 @@ export class CounterButtonComponent implements OnInit {
 
   /**
    * Increments the count when the button is clicked and emits an event
-   * to notify parent compont of new count value
+   * to notify parent component of new count value
    */
   handleButtonClick() {
     this.clickCount++;
