@@ -7,4 +7,9 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'app';
+  currentCount = 0;
+
+  handleCountChanged(e) {
+    this.currentCount = e;
+  }
 }

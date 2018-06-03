@@ -1,4 +1,4 @@
-import { Component, OnInit, EventEmitter } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 
 @Component({
   selector: 'lib-counter-button',
@@ -6,7 +6,7 @@ import { Component, OnInit, EventEmitter } from '@angular/core';
   styleUrls: ['./counter-button.component.css']
 })
 export class CounterButtonComponent implements OnInit {
-  countChanged = new EventEmitter<number>();
+  @Output() countChanged: EventEmitter<number> = new EventEmitter();
   clickCount = 0;
 
   constructor() {}

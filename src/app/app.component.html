@@ -1,3 +1,4 @@
 <div style="text-align:center; padding: 20px;">
-  <lib-counter-button></lib-counter-button>
+  <lib-counter-button (countChanged)="handleCountChanged($event)"></lib-counter-button>
+  <div>The current count is {{currentCount}}!</div>
 </div>
